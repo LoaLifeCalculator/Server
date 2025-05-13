@@ -1,6 +1,6 @@
 package jun.watson.api
 
-import jun.watson.data.Item
+import jun.watson.entity.Item
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient

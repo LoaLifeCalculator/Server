@@ -1,7 +1,6 @@
 package jun.watson.data
 
-import jun.watson.data.Item
-import jun.watson.data.Item.*
+import jun.watson.entity.Item.*
 import jun.watson.dto.ContentReward
 
 /**

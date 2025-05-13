@@ -20,12 +20,12 @@ class LostArkController(
         @RequestParam(required = false) apiKey: String?
     ): ResponseEntity<SearchResponseDto> {
         val expeditions = searchService.getExpeditionsInfo(characterName, apiKey)
-        val resourceEntities = resourceService.getResources()
+        val resources = resourceService.getResources()
 
         return ResponseEntity.ok(
             SearchResponseDto(
                 expeditions = expeditions,
-                resources = resourceEntities.map { it.toResource() }
+                resources = resources
             )
         )
     }

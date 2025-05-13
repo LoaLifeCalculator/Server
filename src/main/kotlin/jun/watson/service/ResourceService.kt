@@ -2,10 +2,9 @@ package jun.watson.service
 
 import jun.watson.api.LostArkApi
 import jun.watson.api.LostArkItemResponseDto
-import jun.watson.entity.ResourceEntity
-import jun.watson.entity.toEntityItem
+import jun.watson.entity.Resource
 import jun.watson.repository.ResourceRepository
-import jun.watson.data.Item
+import jun.watson.entity.Item
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -30,14 +29,14 @@ class ResourceService(
     }
 
     @Transactional(readOnly = true)
-    fun getResources(): List<ResourceEntity> {
+    fun getResources(): List<Resource> {
         return resourceRepository.findAll()
     }
 
     @Transactional
     fun initResources() {
         for (item in Item.entries) {
-            resourceRepository.save(ResourceEntity(item.toEntityItem()))
+            resourceRepository.save(Resource(item))
         }
     }
 

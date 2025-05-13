@@ -1,6 +1,6 @@
 package jun.watson.dto
 
-import jun.watson.data.Item
+import jun.watson.entity.Item
 
 data class ContentReward(
     val gold: Int = 0, // 골드

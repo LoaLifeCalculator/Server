@@ -1,5 +1,6 @@
-package jun.watson.data
+package jun.watson.entity
 
+import jun.watson.data.CategoryCode
 import jun.watson.data.CategoryCode.*
 
 enum class Item(
