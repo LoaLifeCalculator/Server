@@ -7,6 +7,7 @@ import jun.watson.repository.ResourceRepository
 import jun.watson.entity.Item
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.math.RoundingMode
 
 @Service
 class ResourceService(
@@ -41,7 +42,11 @@ class ResourceService(
     }
 
     private fun getAvgPrice(responseDto: LostArkItemResponseDto, item: Item): Double {
-        return responseDto.stats[0].avgPrice / item.bundleCount
+        val avgPrice = responseDto.stats[0].avgPrice / item.bundleCount
+
+        return avgPrice.toBigDecimal()
+            .setScale(3, RoundingMode.HALF_UP)
+            .toDouble()
     }
 
 }
