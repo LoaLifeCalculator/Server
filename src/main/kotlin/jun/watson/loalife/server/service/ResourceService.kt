@@ -4,7 +4,7 @@ import jun.watson.loalife.server.api.LostArkApi
 import jun.watson.loalife.server.api.LostArkItemResponseDto
 import jun.watson.loalife.server.entity.Resource
 import jun.watson.loalife.server.repository.ResourceRepository
-import jun.watson.loalife.server.entity.Item
+import jun.watson.loalife.server.data.Item
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.RoundingMode

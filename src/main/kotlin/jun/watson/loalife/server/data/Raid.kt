@@ -1,6 +1,6 @@
 package jun.watson.loalife.server.data
 
-import jun.watson.loalife.server.entity.Item.*
+import jun.watson.loalife.server.data.Item.*
 import jun.watson.loalife.server.dto.ContentReward
 
 enum class Raid(

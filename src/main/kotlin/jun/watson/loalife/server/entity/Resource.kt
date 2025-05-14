@@ -2,6 +2,7 @@ package jun.watson.loalife.server.entity
 
 import jakarta.persistence.*
 import jakarta.persistence.GenerationType.IDENTITY
+import jun.watson.loalife.server.data.Item
 
 @Entity
 class Resource(

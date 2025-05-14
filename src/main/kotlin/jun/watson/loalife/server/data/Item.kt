@@ -1,6 +1,5 @@
-package jun.watson.loalife.server.entity
+package jun.watson.loalife.server.data
 
-import jun.watson.loalife.server.data.CategoryCode
 import jun.watson.loalife.server.data.CategoryCode.*
 
 enum class Item(

@@ -1,6 +1,6 @@
 package jun.watson.loalife.server.dto
 
-import jun.watson.loalife.server.entity.Item
+import jun.watson.loalife.server.data.Item
 
 data class ContentReward(
     val gold: Int = 0, // 골드

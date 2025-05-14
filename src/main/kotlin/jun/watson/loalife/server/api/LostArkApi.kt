@@ -1,6 +1,6 @@
 package jun.watson.loalife.server.api
 
-import jun.watson.loalife.server.entity.Item
+import jun.watson.loalife.server.data.Item
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
