@@ -14,6 +14,9 @@ spring:
     hibernate:
       ddl-auto: create
 
+  liquibase:
+    enabled: false
+
 api:
   keys:
     key1: ${API_KEY_1}
