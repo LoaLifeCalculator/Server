@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
+import org.springframework.web.reactive.function.client.WebClientRequestException
 import java.lang.Exception
 
 @Service
@@ -38,6 +39,7 @@ class ExpeditionSearchService(
         } catch (e: Exception) {
             when (e) {
                 is HttpClientErrorException,
+                is WebClientRequestException,
                 is HttpServerErrorException -> {
                     val expeditions = getExpeditionsFromCache(name)
                         ?: throw CacheNotExistException("로스트아크 API에 연동할 수 없으며, 캐시 데이터도 존재하지 않습니다.")
