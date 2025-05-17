@@ -5,6 +5,9 @@ import jun.watson.loalife.server.api.LostArkItemResponseDto
 import jun.watson.loalife.server.entity.Resource
 import jun.watson.loalife.server.repository.ResourceRepository
 import jun.watson.loalife.server.data.Item
+import jun.watson.loalife.server.redis.CacheName.RESOURCE
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.RoundingMode
@@ -16,6 +19,7 @@ class ResourceService(
 ) {
 
     @Transactional
+    @CacheEvict(value = [RESOURCE], allEntries = true)
     fun updateResources() {
         val resources = resourceRepository.findAll()
         val searchResults = lostArkApi.searchResourcePrices(Item.entries)
@@ -30,6 +34,7 @@ class ResourceService(
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(RESOURCE)
     fun getResources(): List<Resource> {
         return resourceRepository.findAll()
     }

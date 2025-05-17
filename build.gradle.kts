@@ -40,6 +40,15 @@ dependencies {
 
     // WebFlux(WebClient)
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    // Spring Data Redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    // Spring Cache (캐시 어노테이션 지원용)
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+
+    // Jackson 기반 JSON 직렬화 (선택, Redis에서 DTO를 JSON으로 저장할 때 유용)
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
