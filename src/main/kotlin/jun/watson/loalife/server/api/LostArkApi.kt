@@ -5,6 +5,7 @@ import jun.watson.loalife.server.redis.CacheName.API_CHARACTER_RESPONSE
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.core.ParameterizedTypeReference
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 
@@ -34,15 +35,28 @@ class LostArkApi(
         return response
     }
 
-    fun searchResourcePrices(items: List<Item>): List<LostArkItemResponseDto> {
+    fun searchMarketPrices(items: List<Item>): List<LostArkMarketResponseDto> {
         return items.mapNotNull { item ->
             webClient.get()
                 .uri("https://developer-lostark.game.onstove.com/markets/items/${item.id}")
                 .headers { it.setBearerAuth(apiKeyManager.get()) }
                 .retrieve()
-                .bodyToMono(object : ParameterizedTypeReference<List<LostArkItemResponseDto>>() {})
+                .bodyToMono(object : ParameterizedTypeReference<List<LostArkMarketResponseDto>>() {})
                 .block()
                 ?.firstOrNull()
+        }
+    }
+
+    fun searchAuctionPrices(items: List<Item>): List<LostArkAuctionResponseDto> {
+        return items.mapNotNull { item ->
+            webClient.post()
+                .uri("https://developer-lostark.game.onstove.com/auctions/items")
+                .headers { it.setBearerAuth(apiKeyManager.get()) }
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(LostArkAuctionRequestDto.from(item))
+                .retrieve()
+                .bodyToMono(object : ParameterizedTypeReference<LostArkAuctionResponseDto>() {})
+                .block()
         }
     }
 

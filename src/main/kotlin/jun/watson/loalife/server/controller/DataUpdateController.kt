@@ -14,12 +14,13 @@ class DataUpdateController(
     @EventListener(ApplicationReadyEvent::class)
     fun initializeDatabase() {
         resourceService.initResources()
-        resourceService.updateResources()
+        resourceService.updateMarketResources()
+        resourceService.updateAuctionResources()
     }
 
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     fun dailyUpdate() {
-        resourceService.updateResources()
+        resourceService.updateMarketResources()
     }
 
 }

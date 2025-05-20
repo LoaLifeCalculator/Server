@@ -3,6 +3,7 @@ package jun.watson.loalife.server.controller
 import jun.watson.loalife.server.service.ExpeditionSearchService
 import jun.watson.loalife.server.service.ResourceService
 import jun.watson.loalife.server.dto.SearchResponseDto
+import jun.watson.loalife.server.entity.Resource
 import jun.watson.loalife.server.exception.CacheNotExistException
 import jun.watson.loalife.server.exception.CharacterNotExistException
 import org.springframework.http.HttpStatus
@@ -32,6 +33,13 @@ class LostArkController(
                 resources = resources
             )
         )
+    }
+
+    @GetMapping("/resource")
+    fun findResources(): ResponseEntity<List<Resource>> {
+        val resources = resourceService.getResources()
+
+        return ResponseEntity.ok(resources)
     }
 
     @ExceptionHandler(Exception::class)

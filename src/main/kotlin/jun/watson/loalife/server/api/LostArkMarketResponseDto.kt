@@ -3,7 +3,7 @@ package jun.watson.loalife.server.api
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
-data class LostArkItemResponseDto(
+data class LostArkMarketResponseDto(
 
     @JsonProperty("Name")
     val name: String,
@@ -30,4 +30,8 @@ data class LostArkItemResponseDto(
         @JsonProperty("TradeCount")
         val tradeCount: Int
     )
+
+    val avgPrice: Double
+        get() = stats[0].avgPrice
+
 }
