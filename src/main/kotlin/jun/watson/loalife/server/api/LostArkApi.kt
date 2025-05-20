@@ -35,8 +35,8 @@ class LostArkApi(
         return response
     }
 
-    fun searchMarketPrices(items: List<Item>): List<LostArkMarketResponseDto> {
-        return items.mapNotNull { item ->
+    fun searchMarketPrices(marketItems: List<Item>): List<LostArkMarketResponseDto> {
+        return marketItems.mapNotNull { item ->
             webClient.get()
                 .uri("https://developer-lostark.game.onstove.com/markets/items/${item.id}")
                 .headers { it.setBearerAuth(apiKeyManager.get()) }
@@ -47,8 +47,8 @@ class LostArkApi(
         }
     }
 
-    fun searchAuctionPrices(items: List<Item>): List<LostArkAuctionResponseDto> {
-        return items.mapNotNull { item ->
+    fun searchAuctionPrices(auctionItems: List<Item>): List<LostArkAuctionResponseDto> {
+        return auctionItems.mapNotNull { item ->
             webClient.post()
                 .uri("https://developer-lostark.game.onstove.com/auctions/items")
                 .headers { it.setBearerAuth(apiKeyManager.get()) }
