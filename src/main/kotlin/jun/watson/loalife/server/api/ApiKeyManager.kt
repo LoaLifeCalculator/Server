@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class ApiKeyManager(
     val keys: Map<String, String>
 ) {
-    fun get(keyFromClient: String? = null): String {
+    fun getRandomKey(keyFromClient: String? = null): String {
         return keyFromClient ?: keys.values.random()
     }
 }

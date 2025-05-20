@@ -21,7 +21,7 @@ class LostArkApi(
         val response = webClient.get()
             .uri("https://developer-lostark.game.onstove.com/characters/$queryName/siblings")
             .headers { headers ->
-                headers.setBearerAuth(apiKeyManager.get(keyFromClient))
+                headers.setBearerAuth(apiKeyManager.getRandomKey(keyFromClient))
             }
             .retrieve()
             .bodyToFlux(LostArkCharacterResponseDto::class.java)
@@ -39,7 +39,7 @@ class LostArkApi(
         return marketItems.mapNotNull { item ->
             webClient.get()
                 .uri("https://developer-lostark.game.onstove.com/markets/items/${item.id}")
-                .headers { it.setBearerAuth(apiKeyManager.get()) }
+                .headers { it.setBearerAuth(apiKeyManager.getRandomKey()) }
                 .retrieve()
                 .bodyToMono(object : ParameterizedTypeReference<List<LostArkMarketResponseDto>>() {})
                 .block()
@@ -51,7 +51,7 @@ class LostArkApi(
         return auctionItems.mapNotNull { item ->
             webClient.post()
                 .uri("https://developer-lostark.game.onstove.com/auctions/items")
-                .headers { it.setBearerAuth(apiKeyManager.get()) }
+                .headers { it.setBearerAuth(apiKeyManager.getRandomKey()) }
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(LostArkAuctionRequestDto.from(item))
                 .retrieve()
