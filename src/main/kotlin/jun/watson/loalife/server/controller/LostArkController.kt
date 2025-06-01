@@ -1,19 +1,21 @@
 package jun.watson.loalife.server.controller
 
-import jun.watson.loalife.server.service.ExpeditionSearchService
-import jun.watson.loalife.server.service.ResourceService
 import jun.watson.loalife.server.dto.SearchResponseDto
 import jun.watson.loalife.server.entity.Resource
 import jun.watson.loalife.server.exception.CacheNotExistException
 import jun.watson.loalife.server.exception.CharacterNotExistException
+import jun.watson.loalife.server.service.ExpeditionSearchService
+import jun.watson.loalife.server.service.ResourceService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/api")
 class LostArkController(
     val searchService: ExpeditionSearchService,
     val resourceService: ResourceService,
