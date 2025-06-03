@@ -4,5 +4,5 @@ import jun.watson.loalife.server.entity.Character
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface CharacterRepository : JpaRepository<Character, Long> {
-    fun findByCharacterName(name: String): Character?
+    fun findByCharacterNameIgnoreCase(name: String): Character?
 }

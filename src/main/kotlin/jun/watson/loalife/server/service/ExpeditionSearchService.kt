@@ -69,7 +69,7 @@ class ExpeditionSearchService(
     }
 
     private fun findGroupByName(name: String): Group? {
-        return characterRepository.findByCharacterName(name)?.group
+        return characterRepository.findByCharacterNameIgnoreCase(name)?.group
     }
 
     private fun getExpeditionsFromCache(name: String): Expeditions? {
