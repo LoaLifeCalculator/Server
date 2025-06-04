@@ -21,7 +21,7 @@ class LostArkApi(
         val response = webClient.get()
             .uri("https://developer-lostark.game.onstove.com/characters/$queryName/siblings")
             .headers { headers ->
-                headers.setBearerAuth(apiKeyManager.getRandomKey(keyFromClient))
+                headers.setBearerAuth(keyFromClient ?: apiKeyManager.getRandomKey())
             }
             .retrieve()
             .bodyToFlux(LostArkCharacterResponseDto::class.java)
