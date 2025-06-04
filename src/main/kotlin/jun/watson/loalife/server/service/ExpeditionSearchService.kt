@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.reactive.function.client.WebClientRequestException
+import org.springframework.web.reactive.function.client.WebClientResponseException
 import java.lang.Exception
 
 @Service
@@ -37,17 +38,14 @@ class ExpeditionSearchService(
 
             return Expeditions(characterResponses.map(CharacterResponseDto::from))
         } catch (e: Exception) {
-            when (e) {
-                is HttpClientErrorException,
-                is WebClientRequestException,
-                is HttpServerErrorException -> {
-                    val expeditions = getExpeditionsFromCache(name)
-                        ?: throw CacheNotExistException("로스트아크 API에 연동할 수 없으며, 캐시 데이터도 존재하지 않습니다.")
-
-                    return expeditions
-                }
-                else -> throw e
+            if (!isHttpException(e)) {
+                throw e
             }
+
+            val expeditions = getExpeditionsFromCache(name)
+                ?: throw CacheNotExistException("로스트아크 API에 연동할 수 없으며, 캐시 데이터도 존재하지 않습니다.")
+
+            return expeditions
         }
     }
 
@@ -79,6 +77,19 @@ class ExpeditionSearchService(
             Expeditions(characters.map(CharacterResponseDto::from))
         } else {
             null
+        }
+    }
+
+    private fun isHttpException(e: Exception): Boolean {
+        return when (e) {
+            is HttpClientErrorException,
+            is WebClientRequestException,
+            is WebClientResponseException,
+            is HttpServerErrorException -> {
+                true
+            }
+
+            else -> false
         }
     }
 
