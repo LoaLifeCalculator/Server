@@ -16,7 +16,7 @@ class LostArkApi(
     private val cacheManager: CacheManager
 ) {
 
-    @Cacheable(value = [API_CHARACTER_RESPONSE], key = "#queryName.toLowerCase()")
+    @Cacheable(value = [API_CHARACTER_RESPONSE], key = "#queryName.toLowerCase().trim()")
     fun searchCharacters(queryName: String, keyFromClient: String?): List<LostArkCharacterResponseDto> {
         val response = webClient.get()
             .uri("https://developer-lostark.game.onstove.com/characters/$queryName/siblings")
@@ -30,7 +30,7 @@ class LostArkApi(
 
         for (name in response.map { it.characterName }) {
             cacheManager.getCache(API_CHARACTER_RESPONSE)
-                ?.put(name.lowercase(), response)
+                ?.put(name.lowercase().trim(), response)
         }
 
         return response

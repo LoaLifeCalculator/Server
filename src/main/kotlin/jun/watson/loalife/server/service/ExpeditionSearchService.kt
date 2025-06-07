@@ -27,13 +27,15 @@ class ExpeditionSearchService(
 
     @Transactional
     fun getExpeditionsInfo(name: String, keyFromClient: String?): Expeditions {
+        val queryName = name.lowercase().trim()
+
         try {
-            val characterResponses = lostArkApi.searchCharacters(name, keyFromClient)
+            val characterResponses = lostArkApi.searchCharacters(queryName, keyFromClient)
             if (characterResponses.isEmpty()) {
                 throw CharacterNotExistException("해당 닉네임을 지닌 캐릭터를 조회할 수 없습니다.")
             }
 
-            removeCachesIfExist(name)
+            removeCachesIfExist(queryName)
             insertCaches(characterResponses)
 
             return Expeditions(characterResponses.map(CharacterResponseDto::from))
@@ -42,7 +44,7 @@ class ExpeditionSearchService(
                 throw e
             }
 
-            val expeditions = getExpeditionsFromCache(name)
+            val expeditions = getExpeditionsFromCache(queryName)
                 ?: throw CacheNotExistException("로스트아크 API에 연동할 수 없으며, 캐시 데이터도 존재하지 않습니다.")
 
             return expeditions
