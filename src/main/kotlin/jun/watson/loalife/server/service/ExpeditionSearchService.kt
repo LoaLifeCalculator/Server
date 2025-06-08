@@ -8,8 +8,10 @@ import jun.watson.loalife.server.entity.Character
 import jun.watson.loalife.server.entity.Group
 import jun.watson.loalife.server.exception.CacheNotExistException
 import jun.watson.loalife.server.exception.CharacterNotExistException
+import jun.watson.loalife.server.redis.CacheName.API_CHARACTER_RESPONSE
 import jun.watson.loalife.server.repository.CharacterRepository
 import jun.watson.loalife.server.repository.GroupRepository
+import org.springframework.cache.CacheManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.HttpClientErrorException
@@ -22,12 +24,13 @@ import java.lang.Exception
 class ExpeditionSearchService(
     private val lostArkApi: LostArkApi,
     private val characterRepository: CharacterRepository,
-    private val groupRepository: GroupRepository
+    private val groupRepository: GroupRepository,
+    private val cacheManager: CacheManager
 ) {
 
     @Transactional
     fun getExpeditionsInfo(name: String, keyFromClient: String?): Expeditions {
-        val queryName = name.lowercase().trim()
+        val queryName = getQueryName(name)
 
         try {
             val characterResponses = lostArkApi.searchCharacters(queryName, keyFromClient)
@@ -49,6 +52,23 @@ class ExpeditionSearchService(
 
             return expeditions
         }
+    }
+
+    @Transactional(readOnly = true)
+    fun removeMemoryCache(name: String) {
+        val queryName = getQueryName(name)
+
+        val cache = cacheManager.getCache(API_CHARACTER_RESPONSE) ?: return
+        val group = findGroupByName(queryName) ?: return
+
+        for (character in group.characters) {
+            val queryCharacterName = getQueryName(character.characterName)
+            cache.evict(queryCharacterName)
+        }
+    }
+
+    private fun getQueryName(name: String): String {
+        return name.lowercase().trim()
     }
 
     private fun removeCachesIfExist(name: String) {
