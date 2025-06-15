@@ -14,11 +14,14 @@ import jun.watson.loalife.server.repository.GroupRepository
 import org.springframework.cache.CacheManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.StringUtils
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import java.lang.Exception
+
+const val DEFAULT_NAME = "Suchu"
 
 @Service
 class ExpeditionSearchService(
@@ -29,7 +32,7 @@ class ExpeditionSearchService(
 ) {
 
     @Transactional
-    fun getExpeditionsInfo(name: String, keyFromClient: String?): Expeditions {
+    fun getExpeditionsInfo(name: String?, keyFromClient: String?): Expeditions {
         val queryName = getQueryName(name)
 
         try {
@@ -67,7 +70,11 @@ class ExpeditionSearchService(
         }
     }
 
-    private fun getQueryName(name: String): String {
+    private fun getQueryName(name: String?): String {
+        if (name == null || !StringUtils.hasText(name)) {
+            return DEFAULT_NAME
+        }
+
         return name.lowercase().trim()
     }
 

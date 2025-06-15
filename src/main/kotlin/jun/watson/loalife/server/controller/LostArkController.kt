@@ -20,7 +20,7 @@ class LostArkController(
 
     @GetMapping("/search")
     fun searchInfo(
-        @RequestParam(name = "name") characterName: String,
+        @RequestParam(name = "name") characterName: String?,
         @RequestParam(required = false) apiKey: String?
     ): ResponseEntity<SearchResponseDto> {
         val expeditions = searchService.getExpeditionsInfo(characterName, apiKey)
