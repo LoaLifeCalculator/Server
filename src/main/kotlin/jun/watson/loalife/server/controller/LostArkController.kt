@@ -1,6 +1,5 @@
 package jun.watson.loalife.server.controller
 
-import jun.watson.loalife.server.dto.Expeditions
 import jun.watson.loalife.server.dto.SearchResponseDto
 import jun.watson.loalife.server.entity.Resource
 import jun.watson.loalife.server.exception.CacheNotExistException
@@ -38,11 +37,17 @@ class LostArkController(
     fun renewSearch(
         @RequestParam(name = "name") characterName: String,
         @RequestParam(required = false) apiKey: String?
-    ): ResponseEntity<Expeditions> {
+    ): ResponseEntity<SearchResponseDto> {
         searchService.removeMemoryCache(characterName)
         val expeditions = searchService.getExpeditionsInfo(characterName, apiKey)
+        val resources = resourceService.getResources()
 
-        return ResponseEntity.ok(expeditions)
+        return ResponseEntity.ok(
+            SearchResponseDto(
+                expeditions = expeditions,
+                resources = resources
+            )
+        )
     }
 
     @GetMapping("/resource")
