@@ -19,7 +19,7 @@ enum class Item(
         66102006,
         4,
         REFINING_ADDITIONAL_MATERIAL,
-        10,
+        100,
         MARKET
     ),
     REFINED_OBLITERATION_STONE(
@@ -27,7 +27,7 @@ enum class Item(
         66102005,
         4,
         REFINING_ADDITIONAL_MATERIAL,
-        10,
+        100,
         MARKET
     ),
     OBLITERATION_STONE(
@@ -35,7 +35,7 @@ enum class Item(
         66102004,
         3,
         REFINING_ADDITIONAL_MATERIAL,
-        10,
+        100,
         MARKET
     ),
     DESTRUCTION_STONE_CRYSTAL(
@@ -43,7 +43,7 @@ enum class Item(
         66102003,
         3,
         REFINING_ADDITIONAL_MATERIAL,
-        10,
+        100,
         MARKET
     ),
 
@@ -52,7 +52,7 @@ enum class Item(
         66102106,
         4,
         REFINING_ADDITIONAL_MATERIAL,
-        10,
+        100,
         MARKET
     ),
     REFINED_PROTECTION_STONE(
@@ -60,7 +60,7 @@ enum class Item(
         66102105,
         4,
         REFINING_ADDITIONAL_MATERIAL,
-        10,
+        100,
         MARKET
     ),
     PROTECTION_STONE(
@@ -68,7 +68,7 @@ enum class Item(
         66102104,
         3,
         REFINING_ADDITIONAL_MATERIAL,
-        10,
+        100,
         MARKET
     ),
     GUARDIAN_STONE_CRYSTAL(
@@ -76,7 +76,7 @@ enum class Item(
         66102103,
         3,
         REFINING_ADDITIONAL_MATERIAL,
-        10,
+        100,
         MARKET
     ),
 
