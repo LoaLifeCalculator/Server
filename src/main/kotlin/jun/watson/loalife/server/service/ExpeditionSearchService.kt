@@ -1,25 +1,21 @@
 package jun.watson.loalife.server.service
 
 import jun.watson.loalife.server.api.LostArkApi
-import jun.watson.loalife.server.api.LostArkCharacterResponseDto
 import jun.watson.loalife.server.dto.CharacterResponseDto
 import jun.watson.loalife.server.dto.Expeditions
-import jun.watson.loalife.server.entity.Character
 import jun.watson.loalife.server.entity.Group
 import jun.watson.loalife.server.exception.CacheNotExistException
 import jun.watson.loalife.server.exception.CharacterNotExistException
-import jun.watson.loalife.server.redis.CacheName.API_CHARACTER_RESPONSE
 import jun.watson.loalife.server.repository.CharacterRepository
-import jun.watson.loalife.server.repository.GroupRepository
-import org.springframework.cache.CacheManager
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.util.StringUtils
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
-import java.lang.Exception
 
 const val DEFAULT_NAME = "Suchu"
 
@@ -27,9 +23,9 @@ const val DEFAULT_NAME = "Suchu"
 class ExpeditionSearchService(
     private val lostArkApi: LostArkApi,
     private val characterRepository: CharacterRepository,
-    private val groupRepository: GroupRepository,
-    private val cacheManager: CacheManager
+    private val characterCacheManager: CharacterCacheManager,
 ) {
+    private val log: Logger = LoggerFactory.getLogger(this::class.java)
 
     @Transactional
     fun getExpeditionsInfo(name: String?, keyFromClient: String?): Expeditions {
@@ -41,8 +37,12 @@ class ExpeditionSearchService(
                 throw CharacterNotExistException("해당 닉네임을 지닌 캐릭터를 조회할 수 없습니다.")
             }
 
-            removeCachesIfExist(queryName)
-            insertCaches(characterResponses)
+            try {
+                characterCacheManager.removeCacheIfExist(findGroupByName(queryName))
+                characterCacheManager.insertCache(characterResponses)
+            } catch (e: DataIntegrityViolationException) {
+                log.info("캐시 중복 발생으로 캐시를 처리하지 않음", e)
+            }
 
             return Expeditions(characterResponses.map(CharacterResponseDto::from))
         } catch (e: Exception) {
@@ -55,44 +55,6 @@ class ExpeditionSearchService(
 
             return expeditions
         }
-    }
-
-    @Transactional(readOnly = true)
-    fun removeMemoryCache(name: String) {
-        val queryName = getQueryName(name)
-
-        val cache = cacheManager.getCache(API_CHARACTER_RESPONSE) ?: return
-        val group = findGroupByName(queryName) ?: return
-
-        for (character in group.characters) {
-            val queryCharacterName = getQueryName(character.characterName)
-            cache.evict(queryCharacterName)
-        }
-    }
-
-    private fun getQueryName(name: String?): String {
-        if (name == null || !StringUtils.hasText(name)) {
-            return DEFAULT_NAME
-        }
-
-        return name.lowercase().trim()
-    }
-
-    private fun removeCachesIfExist(name: String) {
-        val group = findGroupByName(name)
-
-        if (group != null) {
-            groupRepository.delete(group)
-        }
-    }
-
-    private fun insertCaches(characterDtos: List<LostArkCharacterResponseDto>) {
-        val group = Group()
-        val characters = characterDtos.map { characterDto -> Character.of(characterDto, group) }
-
-        group.join(characters)
-
-        groupRepository.save(group)
     }
 
     private fun findGroupByName(name: String): Group? {

@@ -4,6 +4,7 @@ import jun.watson.loalife.server.dto.SearchResponseDto
 import jun.watson.loalife.server.entity.Resource
 import jun.watson.loalife.server.exception.CacheNotExistException
 import jun.watson.loalife.server.exception.CharacterNotExistException
+import jun.watson.loalife.server.service.CharacterCacheManager
 import jun.watson.loalife.server.service.ExpeditionSearchService
 import jun.watson.loalife.server.service.ResourceService
 import org.springframework.http.HttpStatus
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api")
 class LostArkController(
     val searchService: ExpeditionSearchService,
+    val characterCacheManager: CharacterCacheManager,
     val resourceService: ResourceService,
 ) {
-
     @GetMapping("/search")
     fun searchInfo(
         @RequestParam(name = "name") characterName: String?,
@@ -38,7 +39,7 @@ class LostArkController(
         @RequestParam(name = "name") characterName: String,
         @RequestParam(required = false) apiKey: String?
     ): ResponseEntity<SearchResponseDto> {
-        searchService.removeMemoryCache(characterName)
+        characterCacheManager.removeMemoryCache(characterName)
         val expeditions = searchService.getExpeditionsInfo(characterName, apiKey)
         val resources = resourceService.getResources()
 
@@ -68,5 +69,4 @@ class LostArkController(
             else -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.message)
         }
     }
-
 }
