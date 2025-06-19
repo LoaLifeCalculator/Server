@@ -75,5 +75,22 @@ data class LostArkAuctionResponseDto(
     )
 
     val price: Int
-        get() = items[0].auctionInfo.startPrice
+        get() {
+            var sum = 0
+            var devider = 0
+
+            for (auctionInfo in items.map { it.auctionInfo }) {
+                if (auctionInfo.buyPrice != null) {
+                    sum += auctionInfo.buyPrice
+                    devider++
+                }
+            }
+
+            if (devider == 0) {
+                return items.sumOf { it.auctionInfo.startPrice } / items.size
+            }
+
+            return sum / devider
+        }
+
 }
