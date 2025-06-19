@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
 data class LostArkMarketResponseDto(
-
     @JsonProperty("Name")
     val name: String,
 
@@ -32,6 +31,6 @@ data class LostArkMarketResponseDto(
     )
 
     val avgPrice: Double
-        get() = stats[0].avgPrice
-
+        get() = stats.first { stat -> stat.tradeCount != 0 }
+                .avgPrice
 }
