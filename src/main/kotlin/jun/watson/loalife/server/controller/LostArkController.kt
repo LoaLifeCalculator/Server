@@ -59,12 +59,13 @@ class LostArkController(
 
     @ExceptionHandler(Exception::class)
     fun handleException(exception: Exception): ResponseEntity<String> {
-        when (exception) {
+        return when (exception) {
             is CacheNotExistException,
             is CharacterNotExistException -> {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.message)
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.message)
             }
-            else -> return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.message)
+
+            else -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.message)
         }
     }
 
