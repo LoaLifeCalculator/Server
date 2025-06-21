@@ -68,7 +68,10 @@ class LostArkController(
     @GetMapping("/count")
     fun getCount(): ResponseEntity<Map<String, Any>> {
         return ResponseEntity.ok(
-            mapOf("count" to apiCallCounter.count, "at" to apiCallCounter.createdAt)
+            mapOf(
+                "count" to apiCallCounter.count,
+                "createdAt" to apiCallCounter.createdAt
+            )
         )
     }
 
