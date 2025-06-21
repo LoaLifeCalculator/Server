@@ -17,12 +17,15 @@ class LostArkController(
     val searchService: ExpeditionSearchService,
     val characterCacheManager: CharacterCacheManager,
     val resourceService: ResourceService,
+    val apiCallCounter: ApiCallCounter
 ) {
     @GetMapping("/search")
     fun searchInfo(
         @RequestParam(name = "name") characterName: String?,
         @RequestParam(required = false) apiKey: String?
     ): ResponseEntity<SearchResponseDto> {
+        apiCallCounter.increment()
+
         val expeditions = searchService.getExpeditionsInfo(characterName, apiKey)
         val resources = resourceService.getResources()
 
@@ -39,6 +42,8 @@ class LostArkController(
         @RequestParam(name = "name") characterName: String,
         @RequestParam(required = false) apiKey: String?
     ): ResponseEntity<SearchResponseDto> {
+        apiCallCounter.increment()
+
         characterCacheManager.removeMemoryCache(characterName)
         val expeditions = searchService.getExpeditionsInfo(characterName, apiKey)
         val resources = resourceService.getResources()
@@ -53,9 +58,18 @@ class LostArkController(
 
     @GetMapping("/resource")
     fun findResources(): ResponseEntity<List<Resource>> {
+        apiCallCounter.increment()
+
         val resources = resourceService.getResources()
 
         return ResponseEntity.ok(resources)
+    }
+
+    @GetMapping("/count")
+    fun getCount(): ResponseEntity<Map<String, Any>> {
+        return ResponseEntity.ok(
+            mapOf("count" to apiCallCounter.count, "at" to apiCallCounter.createdAt)
+        )
     }
 
     @ExceptionHandler(Exception::class)
