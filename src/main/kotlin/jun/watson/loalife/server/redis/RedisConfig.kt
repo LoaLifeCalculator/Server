@@ -39,7 +39,7 @@ class RedisConfig {
     fun cacheManager(redisConnectionFactory: LettuceConnectionFactory): RedisCacheManager {
         val defaultConfig = redisCacheConfiguration()
 
-        val apiResponseConfig = defaultConfig.entryTtl(Duration.ofMinutes(10))
+        val apiResponseConfig = defaultConfig.entryTtl(Duration.ofHours(24))
         val resourceConfig = defaultConfig.entryTtl(Duration.ofHours(1))
 
         return RedisCacheManager.builder(redisConnectionFactory)
