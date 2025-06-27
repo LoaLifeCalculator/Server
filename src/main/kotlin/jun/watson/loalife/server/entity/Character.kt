@@ -14,7 +14,6 @@ class Character(
     val characterLevel: Int,
     val characterClassName: String,
     val itemAvgLevel: Double,
-    val itemMaxLevel: Double,
 ) {
 
     @Id
@@ -32,7 +31,6 @@ class Character(
                 characterLevel = dto.characterLevel,
                 characterClassName = dto.characterClassName,
                 itemAvgLevel = dto.itemAvgLevel,
-                itemMaxLevel = dto.itemMaxLevel,
             )
         }
     }

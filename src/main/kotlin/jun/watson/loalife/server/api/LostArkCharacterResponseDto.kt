@@ -18,9 +18,5 @@ data class LostArkCharacterResponseDto(
 
     @JsonProperty("ItemAvgLevel")
     @JsonDeserialize(using = LevelParser::class)
-    val itemAvgLevel: Double,
-
-    @JsonProperty("ItemMaxLevel")
-    @JsonDeserialize(using = LevelParser::class)
-    val itemMaxLevel: Double
+    val itemAvgLevel: Double
 )

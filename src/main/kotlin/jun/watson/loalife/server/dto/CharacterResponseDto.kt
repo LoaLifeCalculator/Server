@@ -15,7 +15,7 @@ data class CharacterResponseDto(
             return CharacterResponseDto(
                 characterName = entity.characterName,
                 serverName = entity.serverName,
-                level = entity.itemMaxLevel,
+                level = entity.itemAvgLevel,
                 className = entity.characterClassName,
             )
         }
@@ -24,7 +24,7 @@ data class CharacterResponseDto(
             return CharacterResponseDto(
                 characterName = dto.characterName,
                 serverName = dto.serverName,
-                level = dto.itemMaxLevel,
+                level = dto.itemAvgLevel,
                 className = dto.characterClassName,
             )
         }
