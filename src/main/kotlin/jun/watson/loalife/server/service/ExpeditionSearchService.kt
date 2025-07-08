@@ -17,8 +17,6 @@ import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
 
-const val DEFAULT_NAME = "Suchu"
-
 @Service
 class ExpeditionSearchService(
     private val lostArkApi: LostArkApi,
